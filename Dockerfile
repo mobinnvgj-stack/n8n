@@ -1,7 +1,20 @@
-FROM n8nio/n8n
+FROM n8nio/n8n:latest
 
-EXPOSE 10000
+USER root
 
-ENV N8N_HOST=0.0.0.0
-ENV N8N_PORT=10000
-ENV WEBHOOK_URL=https://your-service-name.onrender.com/
+# تثبيت Chromium والمتطلبات
+RUN apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ttf-freefont
+
+# إخبار Puppeteer باستخدام Chromium المثبت
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# تثبيت Puppeteer
+RUN npm install puppeteer
+
+USER node
