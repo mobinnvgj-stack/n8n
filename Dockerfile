@@ -2,15 +2,15 @@ FROM n8nio/n8n:latest
 
 USER root
 
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y \
     chromium \
-    nss \
-    freetype \
-    harfbuzz \
-    ttf-freefont
+    fonts-freefont-ttf \
+    ca-certificates \
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 RUN npm install puppeteer
 
